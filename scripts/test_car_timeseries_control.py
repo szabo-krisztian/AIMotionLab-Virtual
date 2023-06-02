@@ -6,8 +6,8 @@ from util import xml_generator
 
 from classes.car import Car
 
-from classes.car_classes.trajectories import SplineTrajectory as CarTrajectory
-from classes.car_classes.controllers import LPVController as CarLPVController
+from classes.car_classes.trajectories import DummyTrajectory as CarTrajectory
+from classes.car_classes.controllers import InputTimeSeriesController as CarController
 from util import mujoco_helper, carHeading2quaternion
 
 import numpy as np
@@ -40,8 +40,8 @@ control_step, graphics_step = 0.025, 0.025 # the car controller operates in 40 H
 xml_filename = os.path.join(xml_path, save_filename)
 
 # recording interval for automatic video capture
-rec_interval=[1,25]
-#rec_interval = None # no video capture
+#rec_interval=[1,25]
+rec_interval = None # no video capture
 
 # initializing simulator
 simulator = ActiveSimulator(xml_filename, rec_interval, control_step, graphics_step, virt_parsers, mocap_parsers=None, connect_to_optitrack=False)
@@ -56,41 +56,9 @@ car0 = simulator.get_MovingObject_by_name_in_xml(car0_name)
 
 
 # create a trajectory
-car0_trajectory=CarTrajectory()
+car0_trajectory=CarTrajectory() # dummy trajectory object
 
-# define path points and build the path
-path_points = np.array(
-    [
-        [0, 0],
-        [1, 1],
-        [2, 2],
-        [3, 2],
-        [4, 1],
-        [4.5, 0],
-        [4, -1],
-        [3, -2],
-        [2, -2],
-        [1, -1],
-        [0, 0],
-        [-1, 1],
-        [-2, 2],
-        [-3, 2],
-        [-4, 1],
-        [-4.5, 0],
-        [-4, -2.1],
-        [-3, -2.3],
-        [-2, -2],
-        [-1, -1],
-        [0, 0],
-    ]
-)
-
-car0_trajectory.build_from_points_const_speed(path_points=path_points, path_smoothing=0.01, path_degree=4, const_speed=2.2)
-car0_trajectory.plot_trajectory()
-
-
-
-car0_controller = CarLPVController(car0.mass, car0.inertia) # kiszedtem a gravitációt, az a kocsit nem érdekli
+car0_controller = CarController(0.07*np.ones(100), 0.5*np.ones(100)) # kiszedtem a gravitációt, az a kocsit nem érdekli
 
 car0_controllers = [car0_controller]
 
