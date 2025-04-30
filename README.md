@@ -1,6 +1,9 @@
 # Virtual 3D model of AIMotion-Lab and simulation with MuJoCo engine
 
-The documentation can be accessed [here](https://github.com/AIMotionLab-SZTAKI/Mujoco-Simulator/wiki).
+## Thesis work
+
+The wind simulation augmentation is located on the rework_windflow branch. All related scripts and entry points can be found under:
+```scripts/windflow```
 
 ## Installation
 1. Create and activate a virtual environment with Python <= 3.9
